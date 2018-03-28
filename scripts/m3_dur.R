@@ -1,4 +1,4 @@
-`#MI-M3_dur_norm
+#MI-M3_dur_norm
 library(untidydata)
 library(plot3D)
 library(tidyverse)
@@ -38,9 +38,9 @@ m3_dur_a <- m3_dur_norm %>%
 m3_dur_a %>%
   ggplot(., aes(x = as.factor(syllable), y = dur_norm, color = as.factor(stress))) +
   geom_boxplot() + 
-  labs(x = "Syllable", y = "Duration(ms)", color = "Stress", title = "[a] durations") 
+  labs(x = "Syllable", y = "Duration(ms)", color = "Stress", title = "[a] and [a:] Durations") 
 
-
+#no longer necessary
 m3_dur_aː <- m3_dur_norm %>%
   filter(., vowel == 'aː')
 m3_dur_aː %>%
@@ -56,15 +56,29 @@ m3_dur_ə %>%
   labs(x = "Syllable", y = "Duration(ms)", color = "Stress", title = "[ə] durations")
 
 m3_dur_i <- m3_dur_norm %>%
-  filter(., vowel == 'i')
+  filter(., vowel %in% c('i', 'i:'))
 m3_dur_i %>%
   ggplot(., aes(x = as.factor(syllable), y = dur_norm, color = as.factor(stress))) +
   geom_boxplot() + 
-  labs(x = "Syllable", y = "Duration(ms)", color = "Stress", title = "[i] durations")
+  labs(x = "Syllable", y = "Duration(ms)", color = "Stress", title = "[i] and [i:] Durations")
+
+m3_dur_e <- m3_dur_norm %>%
+  filter(., vowel %in% c('e', 'e:'))
+m3_dur_e %>%
+  ggplot(., aes(x = as.factor(syllable), y = dur_norm, color = as.factor(stress))) +
+  geom_boxplot() + 
+  labs(x = "Syllable", y = "Duration(ms)", color = "Stress", title = "[e] and [e:] Durations")
 
 m3_dur_o <- m3_dur_norm %>%
-  filter(., vowel == 'o')
+  filter(., vowel %in% c('o', 'o:'))
 m3_dur_o %>%
   ggplot(., aes(x = as.factor(syllable), y = dur_norm, color = as.factor(stress))) +
   geom_boxplot() + 
-  labs(x = "Syllable", y = "Duration(ms)", color = "Stress", title = "[o] durations")
+  labs(x = "Syllable", y = "Duration(ms)", color = "Stress", title = "[o] and [o:] Durations")
+
+m3_dur_u <- m3_dur_norm %>%
+  filter(., vowel %in% c('u', 'u:'))
+m3_dur_u %>%
+  ggplot(., aes(x = as.factor(syllable), y = dur_norm, color = as.factor(stress))) +
+  geom_boxplot() + 
+  labs(x = "Syllable", y = "Duration(ms)", color = "Stress", title = "[u] and [u:] Durations")
