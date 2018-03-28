@@ -1,0 +1,83 @@
+library(tidyverse)
+str(mtcars)
+mean(mtcars$mpg)
+mean(mtcars[, 'mpg'])
+#the pipe %>% sends information from left to right; "send this". . as first argument represents what you sent from left
+#select()
+mtcars %>%
+  select(., mpg) %>%
+  pull(.) %>%
+  mean(.)
+#filter()
+mtcars %>% 
+  select(., mpg, vs, carb) %>% 
+  filter(., vs != 0 | carb == 4)
+#arrange()
+mtcars %>% 
+  select(., mpg, vs, carb) %>% 
+  arrange(., -mpg)
+#rename()
+mtcars %>% 
+  select(., mpg, vs, carb) %>%
+  rename(., miles_x_g = mpg)
+#same thing using select()
+mtcars %>% 
+  select(., miles_x_g = mpg, vs, carb)
+#mutate()
+mtcars %>% 
+  select(., mpg, vs, carb) %>%
+  arrange(., mpg) %>%
+  mutate(., mpg_std = (mpg - mean(mpg)) / sd(mpg)) %>%
+  pull(mpg_std) %>%
+  sd()
+#summarize()
+mtcars %>% 
+  select(., mpg) %>% 
+  summarize(., mpg = mean(mpg))
+mtcars %>% 
+  select(., mpg, carb) %>% 
+  group_by(., carb) %>%
+  summarize(., mpg = mean(mpg), sd = sd(mpg))
+#send to ggplot
+mtcars %>% 
+  select(., mpg, carb) %>% 
+  group_by(., carb) %>%
+  summarize(., mpg = mean(mpg), sd = sd(mpg)) %>% 
+  ggplot(., aes(x = carb, y = mpg)) + 
+    geom_bar(stat = 'identity') + 
+    scale_x_continuous(breaks = 1:8, 
+                      labels = c('one', 'two', 'three',
+                              'four', 'five', 'six', 
+                              'seven', 'eight')) 
+
+#1. select all columns except vs and mpg with the rows 1 through 10
+mtcars %>% 
+  select(., -mpg, -vs) %>% 
+  slice(1:10)
+mtcars %>% 
+  select(., -mpg, -vs) %>% 
+  head(., 10)
+#2. calculate sd of 'hp' for each level of 'vs'
+mtcars %>% 
+  select(., vs, hp) %>%
+ filter(vs == 1) %>%
+ summarize(sd = sd(hp))
+mtcars %>% 
+  select(., vs, hp) %>%
+  filter(vs == 0) %>%
+  summarize(sd = sd(hp))
+mtcars %>% 
+  group_by(., vs) %>%
+  summarize(hp_sd = sd(hp))
+#3. select mpg, hp, and vs. create a scatter plot with mpg ~ hp with different colors for vs 
+mtcars %>% 
+  select(., mpg, hp, vs) %>%
+  ggplot(., aes(x = hp, y = mpg)) +
+    geom_point(aes(color = as.factor(vs))) + 
+    geom_smooth(se = FALSE) +
+    scale_color_discrete(name = 'VS')
+#4. plot the mean mpg for each level of vs with a stat summary of mpg
+mtcars %>% 
+  ggplot(., aes(x = as.factor(vs), y = mpg)) +
+    stat_summary(fun.data = mean_cl_boot, geom = 'pointrange') +
+  ylim(0, 40)
