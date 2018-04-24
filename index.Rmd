@@ -130,9 +130,10 @@ head(m3_dur_norm)
 ---
 
 .pull-left[
-This plot suggests that overall vowels are generally longer in syllables described as stressed, particularly so in stressed final syllables. However, there appear to be a lot of outliers. In addition, the results have been collapsed across phonologically short and long vowels as well as vowel quality so it is not clear whether the effects of duration are uniform across phonological length contrasts or across vowels.
+This plot suggests that overall vowels are generally longer in syllables described as stressed, particularly so in stressed final syllables. However, there appear to be a lot of outliers. In addition, the results have been collapsed across phonologically short and long vowels as well as vowel quality so it is not clear whether the effects of duration are uniform across phonological length contrasts or across vowels.]
 
-```{r echo=FALSE, message=FALSE, dur_plot, warning=FALSE, fig.height=5, fig.width=5, fig.align='left'}
+.pull-right[
+```{r echo=FALSE, message=FALSE, dur_plot, warning=FALSE}
 m3_dur_norm %>%
   ggplot(., aes(x = as.factor(syllable), y = dur_norm, color = as.factor(stress))) +
   geom_boxplot() + 
@@ -140,12 +141,11 @@ m3_dur_norm %>%
 ```
 ]
 
---
+---
 
-.pull-right[
 This plot shows that vowel durations of long and short vowels did not clearly vary according to the described stress pattern. Short [a]s were slightly longer when unstressed in an initial syllable and [ə]s were longer in an unstressed second syllable. Long [iː]s were longer in an unstressed second syllable and there were some long [uː]s in unstressed second syllables that were longer than any stressed ones. Long vowels were clearly longer in the second syllable than the first.
 
-```{r, dur_plots, warning=FALSE, message=FALSE, echo=FALSE, fig.height=7, fig.width=10, fig.align='right'}
+```{r, dur_plots, warning=FALSE, message=FALSE, echo=FALSE, fig.width=10}
 m3_dur_a <- m3_dur_norm %>%
   filter(., vowel %in% c('a', 'ə', 'i:', 'u:')) #filter both [a] and [ə]. code all [aː] as [a:]. not reading IPA length symbol, so just use colon
 m3_dur_a %>%
@@ -154,7 +154,6 @@ m3_dur_a %>%
   facet_grid(~ vowel) +
   labs(x = "Syllable", y = "Duration (ms)", color = "Stress", title = "Durations per vowel") 
 ```
-]
 
 ---
 
