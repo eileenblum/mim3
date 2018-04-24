@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Data Sci Final</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Eileen Blum" />
+    <meta name="date" content="2018-04-24" />
+    <link rel="stylesheet" href="https://www.jvcasillas.com/ru_xaringan/css/rutgers.css" type="text/css" />
+    <link rel="stylesheet" href="https://www.jvcasillas.com/ru_xaringan/css/rutgers-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Data Sci Final
+## QP1: Allophony-driven stress in Munster Irish
+### Eileen Blum
+### April 24, 2018
+
+---
+
+
+
+
+# Introduction
+
+Stress descriptions claim:
+- Default initial stress
+- coda consonants do not attract stress
+- Three-way weight distinction:
+CV &lt; Cax &lt; CVː
+  - stress attracted to second syllable by /ax/, but not away from long vowels
+
+--
+
+## Hypotheses
+
+- Ternary stress, as described
+- Something else, impressionistic descriptions unreliable
+
+---
+
+# Acoustic Experiment- Methods
+
+.pull-left[
+- 1 participant
+  - male
+  - spoke only Irish until 10 years old
+  - living in US 50 years
+  - speaks Irish regularly on phone with family
+  
+Recorded in the field using 
+- AKG C420 condenser microphone plugged into to
+- Marantz PMD670 solid state recorder with
+- 44.1 kHz sample rate and 16 bit quantization rate in mono
+]
+
+--
+
+.pull-right[
+Stimuli:
+- 69 disyllables
+- 9 shapes including CV, CVː, and Cax syllables in each position
+- vowels: [i], [u], [o], [a]
+- consonants: 
+  - initial voiced/voiceless obstruents [pbdtgk], [fvsʃ]
+  - medial voiceless obstruents [ptk], [fsʃx]
+
+Experimental task:
+- see a word on computer screen
+- say two frame sentences with word inserted
+- practiced with filler words to start
+- each target repeated 3 times, 207 total stimuli
+  - filler sentences inserted after every 5 targets
+]
+
+---
+
+# Measurements
+
+.pull-left[
+## Vowels
+
+- Duration
+- Intensity
+- Pitch (F0)
+- Formants F1, F2]
+
+.pull-right[
+## [x] Fricatives
+
+- Center of Gravity
+- Intensity
+- Duration]
+
+---
+
+# Existing Statistical Analysis
+
+T-tests in Excel (p &lt; 0.01) found:
+- F1 differed consistently between syllables
+  - Initial stress in all word shapes except CVCax
+  - Unstressed short vowels reduce to [ə], except before /x/
+
+- Did not differ consistently between syllables:
+  - F0
+  - F2 
+  - Duration
+  - Intensity
+  - Fricatives: CoG, Intensity, Duration
+  
+---
+
+# Reanalysis Goals
+
+Generalized linear model to test the effects on vowels of
+- F1
+- F2
+- duration
+- and their interactions 
+
+as a factor of
+- frame sentence
+- syllable (1, 2)
+- stress (0, 1) according to the described pattern
+
+
+```
+##                file  shape vowel  dur_norm frame syllable stress
+## 1   baːpəx.TextGrid CvːCax    a: 169.46309     1        1      1
+## 2   baːpəx.TextGrid CvːCax     ə  21.81208     1        2      0
+## 3   baːpəx.TextGrid CvːCax    a: 193.79562     2        1      1
+## 4   baːpəx.TextGrid CvːCax     ə  33.94161     2        2      0
+## 5 baːpəx-2.TextGrid CvːCax    a: 164.63415     1        1      1
+## 6 baːpəx-2.TextGrid CvːCax     ə  59.95935     1        2      0
+```
+
+---
+
+.pull-left[
+This plot suggests that overall vowels are generally longer in syllables described as stressed, particularly so in stressed final syllables. However, there appear to be a lot of outliers. In addition, the results have been collapsed across phonologically short and long vowels as well as vowel quality so it is not clear whether the effects of duration are uniform across phonological length contrasts or across vowels.
+
+&lt;img src="index_files/figure-html/dur_plot-1.png" style="display: block; margin: auto auto auto 0;" /&gt;
+]
+
+--
+
+.pull-right[
+This plot shows that vowel durations of long and short vowels did not clearly vary according to the described stress pattern. Short [a]s were slightly longer when unstressed in an initial syllable and [ə]s were longer in an unstressed second syllable. Long [iː]s were longer in an unstressed second syllable and there were some long [uː]s in unstressed second syllables that were longer than any stressed ones. Long vowels were clearly longer in the second syllable than the first.
+
+&lt;img src="index_files/figure-html/dur_plots-1.png" style="display: block; margin: auto 0 auto auto;" /&gt;
+]
+
+---
+
+# Progress
+
+.pull-left[
+Done:
+- Tidy Duration Data
+
+Still to do:
+- Finish tidying formant data, combine with durations
+- Apply GLM
+- Nested model comparisons]
+
+.pull-right[
+### Detailed suggestions welcome!
+]
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://www.jvcasillas.com/ru_xaringan/js/ru_xaringan.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

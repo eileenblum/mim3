@@ -1,0 +1,174 @@
+---
+title: "Data Sci Final"
+subtitle: "QP1: Allophony-driven stress in Munster Irish"
+author: "Eileen Blum"
+date: "April 24, 2018"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["https://www.jvcasillas.com/ru_xaringan/css/rutgers.css", "https://www.jvcasillas.com/ru_xaringan/css/rutgers-fonts.css"]
+    nature:
+      beforeInit: "https://www.jvcasillas.com/ru_xaringan/js/ru_xaringan.js"
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Introduction
+
+Stress descriptions claim:
+- Default initial stress
+- coda consonants do not attract stress
+- Three-way weight distinction:
+CV < Cax < CVː
+  - stress attracted to second syllable by /ax/, but not away from long vowels
+
+--
+
+## Hypotheses
+
+- Ternary stress, as described
+- Something else, impressionistic descriptions unreliable
+
+---
+
+# Acoustic Experiment- Methods
+
+.pull-left[
+- 1 participant
+  - male
+  - spoke only Irish until 10 years old
+  - living in US 50 years
+  - speaks Irish regularly on phone with family
+  
+Recorded in the field using 
+- AKG C420 condenser microphone plugged into to
+- Marantz PMD670 solid state recorder with
+- 44.1 kHz sample rate and 16 bit quantization rate in mono
+]
+
+--
+
+.pull-right[
+Stimuli:
+- 69 disyllables
+- 9 shapes including CV, CVː, and Cax syllables in each position
+- vowels: [i], [u], [o], [a]
+- consonants: 
+  - initial voiced/voiceless obstruents [pbdtgk], [fvsʃ]
+  - medial voiceless obstruents [ptk], [fsʃx]
+
+Experimental task:
+- see a word on computer screen
+- say two frame sentences with word inserted
+- practiced with filler words to start
+- each target repeated 3 times, 207 total stimuli
+  - filler sentences inserted after every 5 targets
+]
+
+---
+
+# Measurements
+
+.pull-left[
+## Vowels
+
+- Duration
+- Intensity
+- Pitch (F0)
+- Formants F1, F2]
+
+.pull-right[
+## [x] Fricatives
+
+- Center of Gravity
+- Intensity
+- Duration]
+
+---
+
+# Existing Statistical Analysis
+
+T-tests in Excel (p < 0.01) found:
+- F1 differed consistently between syllables
+  - Initial stress in all word shapes except CVCax
+  - Unstressed short vowels reduce to [ə], except before /x/
+
+- Did not differ consistently between syllables:
+  - F0
+  - F2 
+  - Duration
+  - Intensity
+  - Fricatives: CoG, Intensity, Duration
+  
+---
+
+# Reanalysis Goals
+
+Generalized linear model to test the effects on vowels of
+- F1
+- F2
+- duration
+- and their interactions 
+
+as a factor of
+- frame sentence
+- syllable (1, 2)
+- stress (0, 1) according to the described pattern
+
+```{r, dur_data, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)
+m3_dur_norm <- read.csv("./data/M3dur_norm.csv")
+head(m3_dur_norm)
+```
+
+---
+
+.pull-left[
+This plot suggests that overall vowels are generally longer in syllables described as stressed, particularly so in stressed final syllables. However, there appear to be a lot of outliers. In addition, the results have been collapsed across phonologically short and long vowels as well as vowel quality so it is not clear whether the effects of duration are uniform across phonological length contrasts or across vowels.
+
+```{r echo=FALSE, message=FALSE, dur_plot, warning=FALSE, fig.height=5, fig.width=5, fig.align='left'}
+m3_dur_norm %>%
+  ggplot(., aes(x = as.factor(syllable), y = dur_norm, color = as.factor(stress))) +
+  geom_boxplot() + 
+  labs(x = "Syllable", y = "Duration (ms)", color = "Stress", title = "Pooled Vowel durations")
+```
+]
+
+--
+
+.pull-right[
+This plot shows that vowel durations of long and short vowels did not clearly vary according to the described stress pattern. Short [a]s were slightly longer when unstressed in an initial syllable and [ə]s were longer in an unstressed second syllable. Long [iː]s were longer in an unstressed second syllable and there were some long [uː]s in unstressed second syllables that were longer than any stressed ones. Long vowels were clearly longer in the second syllable than the first.
+
+```{r, dur_plots, warning=FALSE, message=FALSE, echo=FALSE, fig.height=7, fig.width=10, fig.align='right'}
+m3_dur_a <- m3_dur_norm %>%
+  filter(., vowel %in% c('a', 'ə', 'i:', 'u:')) #filter both [a] and [ə]. code all [aː] as [a:]. not reading IPA length symbol, so just use colon
+m3_dur_a %>%
+  ggplot(., aes(x = as.factor(syllable), y = dur_norm, color = as.factor(stress))) +
+  geom_boxplot() + 
+  facet_grid(~ vowel) +
+  labs(x = "Syllable", y = "Duration (ms)", color = "Stress", title = "Durations per vowel") 
+```
+]
+
+---
+
+# Progress
+
+.pull-left[
+Done:
+- Tidy Duration Data
+
+Still to do:
+- Finish tidying formant data, combine with durations
+- Apply GLM
+- Nested model comparisons]
+
+.pull-right[
+### Detailed suggestions welcome!
+]
