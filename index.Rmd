@@ -170,5 +170,5 @@ Still to do:
 - Predictors: predicted stress, syllable position]
 
 .pull-right[
-### Detailed suggestions welcome!
+### Suggestions welcome!
 ]
