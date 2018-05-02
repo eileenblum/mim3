@@ -172,3 +172,6 @@ Still to do:
 .pull-right[
 ### Suggestions welcome!
 ]
+
+#model for each correlate per vowel, vowels with all cells
+#logistic regression
