@@ -8,3 +8,5 @@ M3 data project:
 4/23- Presentation slides
 
 4/30- tidy formant means
+
+5/2- Finish tidying, combine duration and formants, [a] duration models
