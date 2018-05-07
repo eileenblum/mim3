@@ -13,6 +13,12 @@ adata <- m3_data %>%
   mutate(., f1_c = F1 - mean(F1)) %>%
   mutate(., f2_c = F2 - mean(F2))
 
+aadata <- m3_data %>%
+  filter(., vowel == "a:")  %>%
+  mutate(., dur_c = dur_norm - mean(dur_norm)) %>%
+  mutate(., f1_c = F1 - mean(F1)) %>%
+  mutate(., f2_c = F2 - mean(F2))
+
 dput(adata)
 
 ədata <- m3_data %>%
@@ -27,10 +33,20 @@ adur_plot <- adata %>%
   geom_jitter() +
   labs(title="[a] Durations", x="Syllable", y="Duration (ms)", color="Stress")
 
+aadata %>% 
+  ggplot(., aes(x=as.factor(syllable), y=dur_norm)) +
+  geom_boxplot() +
+  labs(title="[a:] Durations", x="Syllable", y="Duration (ms)")
+
 aplot <- adata %>% 
   ggplot(., aes(x=as.factor(syllable), y=F1, color=as.factor(stress))) +
   geom_boxplot() +
   labs(title="[a] F1", x="Syllable", y="F1", color="Stress")
+
+aadata %>% 
+  ggplot(., aes(x=as.factor(syllable), y=F1)) +
+  geom_boxplot() +
+  labs(title="[a:] F1", x="Syllable", y="F1")
 
 adata %>% 
   ggplot(., aes(x=as.factor(), y=f2_c, color=as.factor(stress))) +
@@ -46,6 +62,32 @@ adata %>%
   ggplot(., aes(x=as.factor(syllable), y=F1, color=as.factor(stress))) +
   geom_boxplot() +
   labs(title="[ə] F1", x="Syllable", y="F1", color="Stress")
+
+m3_data$vowel <- as.factor(vowel)
+
+vform_plot <- m3_data %>%
+  filter(., vowel %in% c("a", "ə", "i", "e", "u", "o")) %>% 
+  ggplot(., aes(x = F2, y = F1, color = vowel, label = vowel, shape = vowel)) +
+  labs(title="Short Vowels", x="F2", y="F1", color="Vowel") +
+  geom_text() +
+  stat_ellipse(aes(color = vowel)) +
+  scale_y_reverse() + 
+  scale_x_reverse() +
+  scale_color_brewer(palette = "Set1") + 
+  facet_grid(~stress) +
+  guides(colour = guide_legend(override.aes = list(size = 3, shape = 15))) 
+
+v:form_plot <- m3_data %>%
+  filter(., vowel %in% c("u:", "a:", "i:", "e:", "o:")) %>%
+  ggplot(., aes(x = F2, y = F1, color = vowel, label = vowel, shape = vowel)) +
+  labs(title="Long Vowels", x="F2", y="F1", color="Vowel") +
+  geom_text() +
+  stat_ellipse(aes(color = vowel)) +
+  scale_y_reverse() + 
+  scale_x_reverse() +
+  scale_color_brewer(palette = "Set1") + 
+  facet_grid(~stress) +
+  guides(colour = guide_legend(override.aes = list(size = 3, shape = 15)))
 
 # Models
 
